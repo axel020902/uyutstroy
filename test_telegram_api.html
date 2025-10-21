@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест Telegram API</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .test-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .test-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .log {
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .status {
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+            display: block;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+            display: block;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .info-box strong {
+            color: #667eea;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Тест Telegram API</h1>
+        <p class="subtitle">Проверка интеграции с Telegram ботом</p>
+
+        <div class="info-box">
+            <strong>Токен:</strong> <code>8050200832:AAH5ScyG__5FCxX9_nEDdU0QrRCGvXlIU58</code><br>
+            <strong>Chat ID:</strong> <code>-1003143740246</code>
+        </div>
+
+        <!-- Тест 1: Прямой API -->
+        <div class="test-section">
+            <h3>✅ Тест 1: Прямой Telegram API</h3>
+            <button class="btn btn-primary" onclick="testDirectAPI()">
+                Отправить тестовое сообщение напрямую
+            </button>
+            <div id="status1" class="status"></div>
+        </div>
+
+        <!-- Тест 2: Через Vercel функцию -->
+        <div class="test-section">
+            <h3>🔄 Тест 2: Через Vercel функцию</h3>
+            <button class="btn btn-success" onclick="testVercelAPI()">
+                Отправить через /api/telegram
+            </button>
+            <div id="status2" class="status"></div>
+        </div>
+
+        <!-- Тест 3: Проверка бота -->
+        <div class="test-section">
+            <h3>🔍 Тест 3: Информация о боте</h3>
+            <button class="btn btn-primary" onclick="getBotInfo()">
+                Получить данные бота
+            </button>
+            <div id="status3" class="status"></div>
+        </div>
+
+        <!-- Тест 4: Проверка чата -->
+        <div class="test-section">
+            <h3>💬 Тест 4: Проверка доступа к чату</h3>
+            <button class="btn btn-primary" onclick="testChatAccess()">
+                Проверить доступ к чату
+            </button>
+            <div id="status4" class="status"></div>
+        </div>
+
+        <!-- Консоль логов -->
+        <div class="log" id="logConsole">Ожидание тестов...\n</div>
+
+        <!-- Очистить логи -->
+        <button class="btn btn-danger" onclick="clearLog()">
+            🗑️ Очистить логи
+        </button>
+    </div>
+
+    <script>
+        const botToken = '8050200832:AAH5ScyG__5FCxX9_nEDdU0QrRCGvXlIU58';
+        const chatId = '-1003143740246';
+        
+        function log(message, type = 'info') {
+            const logConsole = document.getElementById('logConsole');
+            const timestamp = new Date().toLocaleTimeString('ru-RU');
+            const emoji = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+            logConsole.textContent += `[${timestamp}] ${emoji} ${message}\n`;
+            logConsole.scrollTop = logConsole.scrollHeight;
+        }
+
+        function showStatus(elementId, message, success) {
+            const status = document.getElementById(elementId);
+            status.className = 'status ' + (success ? 'success' : 'error');
+            status.textContent = message;
+        }
+
+        function clearLog() {
+            document.getElementById('logConsole').textContent = 'Логи очищены.\n';
+            document.querySelectorAll('.status').forEach(el => el.style.display = 'none');
+        }
+
+        // Тест 1: Прямой API
+        async function testDirectAPI() {
+            log('Отправка сообщения напрямую в Telegram API...');
+            
+            try {
+                const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+                
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: '🧪 Тестовое сообщение (прямой API)\n⏰ Время: ' + new Date().toLocaleString('ru-RU'),
+                        parse_mode: 'HTML'
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.ok) {
+                    log('Сообщение успешно отправлено! Message ID: ' + data.result.message_id, 'success');
+                    showStatus('status1', '✅ Успешно! Проверьте Telegram чат.', true);
+                } else {
+                    log('Ошибка Telegram API: ' + data.description, 'error');
+                    showStatus('status1', '❌ Ошибка: ' + data.description, false);
+                }
+                
+                log('Полный ответ: ' + JSON.stringify(data, null, 2));
+            } catch (error) {
+                log('Ошибка запроса: ' + error.message, 'error');
+                showStatus('status1', '❌ Ошибка: ' + error.message, false);
+            }
+        }
+
+        // Тест 2: Через Vercel функцию
+        async function testVercelAPI() {
+            log('Отправка через Vercel функцию /api/telegram...');
+            
+            try {
+                const response = await fetch('/api/telegram', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: '🧪 Тестовое сообщение (через Vercel)\n⏰ Время: ' + new Date().toLocaleString('ru-RU')
+                    })
+                });
+
+                if (!response.ok) {
+                    log('HTTP ошибка: ' + response.status, 'error');
+                    showStatus('status2', '❌ HTTP ошибка: ' + response.status, false);
+                    return;
+                }
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    log('Сообщение через Vercel отправлено успешно!', 'success');
+                    showStatus('status2', '✅ Успешно! Vercel функция работает.', true);
+                } else {
+                    log('Ошибка Vercel функции: ' + data.error, 'error');
+                    showStatus('status2', '❌ Ошибка: ' + data.error, false);
+                }
+                
+                log('Полный ответ: ' + JSON.stringify(data, null, 2));
+            } catch (error) {
+                log('Ошибка запроса к Vercel: ' + error.message, 'error');
+                showStatus('status2', '❌ Возможно, не задеплоено на Vercel: ' + error.message, false);
+            }
+        }
+
+        // Тест 3: Информация о боте
+        async function getBotInfo() {
+            log('Получение информации о боте...');
+            
+            try {
+                const url = `https://api.telegram.org/bot${botToken}/getMe`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.ok) {
+                    const bot = data.result;
+                    log('Информация о боте получена:', 'success');
+                    log(`  ID: ${bot.id}`);
+                    log(`  Username: @${bot.username}`);
+                    log(`  Имя: ${bot.first_name}`);
+                    log(`  Can Join Groups: ${bot.can_join_groups}`);
+                    log(`  Can Read Messages: ${bot.can_read_all_group_messages}`);
+                    showStatus('status3', `✅ Бот активен: @${bot.username}`, true);
+                } else {
+                    log('Ошибка получения данных бота: ' + data.description, 'error');
+                    showStatus('status3', '❌ Неверный токен бота', false);
+                }
+            } catch (error) {
+                log('Ошибка запроса: ' + error.message, 'error');
+                showStatus('status3', '❌ Ошибка: ' + error.message, false);
+            }
+        }
+
+        // Тест 4: Проверка доступа к чату
+        async function testChatAccess() {
+            log('Проверка доступа к чату...');
+            
+            try {
+                const url = `https://api.telegram.org/bot${botToken}/getChat`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.ok) {
+                    const chat = data.result;
+                    log('Информация о чате получена:', 'success');
+                    log(`  ID: ${chat.id}`);
+                    log(`  Тип: ${chat.type}`);
+                    log(`  Название: ${chat.title || 'N/A'}`);
+                    showStatus('status4', `✅ Доступ к чату есть!`, true);
+                } else {
+                    log('Ошибка доступа к чату: ' + data.description, 'error');
+                    showStatus('status4', '❌ Нет доступа к чату или неверный chat_id', false);
+                }
+            } catch (error) {
+                log('Ошибка запроса: ' + error.message, 'error');
+                showStatus('status4', '❌ Ошибка: ' + error.message, false);
+            }
+        }
+
+        // Автоматический тест при загрузке страницы
+        window.addEventListener('DOMContentLoaded', function() {
+            log('Страница загружена. Готов к тестированию!');
+            log('Нажмите кнопки для запуска тестов.');
+        });
+    </script>
+</body>
+</html>
+

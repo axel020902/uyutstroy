@@ -1,0 +1,22 @@
+# Node modules
+node_modules/
+
+# Vercel
+.vercel/
+.vercel
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+
