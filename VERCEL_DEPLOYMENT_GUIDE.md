@@ -47,10 +47,20 @@
     {
       "src": "/api/telegram",
       "dest": "/api/telegram.js"
+    },
+    {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
     }
   ]
 }
 ```
+
+**Важно:** Эти маршруты необходимы для правильной работы сайта!
 
 ### Проверьте api/telegram.js
 
@@ -302,27 +312,57 @@ fetch('https://api.telegram.org/bot8050200832:AAH5ScyG__5FCxX9_nEDdU0QrRCGvXlIU5
 
 ---
 
-### ❌ Проблема: Ошибка 404 при отправке формы
+### ❌ Проблема: Ошибка 404 NOT_FOUND при открытии сайта
+
+#### Причина:
+Vercel не знает, какую страницу показывать по умолчанию.
 
 #### Решение:
 
-1. Проверьте `vercel.json`:
+1. Проверьте `vercel.json` - должны быть все маршруты:
    ```json
    {
      "routes": [
        {
          "src": "/api/telegram",
          "dest": "/api/telegram.js"
+       },
+       {
+         "src": "/",
+         "dest": "/index.html"
+       },
+       {
+         "src": "/(.*)",
+         "dest": "/$1"
        }
      ]
    }
    ```
 
-2. Убедитесь, что файл находится в `api/telegram.js` (не `api/telegram/index.js`)
+2. Обновите проект:
+   ```bash
+   git add vercel.json
+   git commit -m "Fix 404 - add routes"
+   git push
+   ```
 
-3. Пересоздайте деплой:
+3. Или пересоздайте деплой вручную:
    - Зайдите в **"Deployments"**
    - Нажмите **"..."** → **"Redeploy"**
+
+4. **Подробнее:** См. файл `ИСПРАВЛЕНИЕ_404.md`
+
+---
+
+### ❌ Проблема: Ошибка 404 при отправке формы в Telegram
+
+#### Решение:
+
+1. Убедитесь, что файл находится в `api/telegram.js` (не `api/telegram/index.js`)
+
+2. Проверьте маршрут в `vercel.json`
+
+3. Пересоздайте деплой
 
 ---
 
