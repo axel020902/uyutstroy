@@ -3160,6 +3160,21 @@
             cursor: not-allowed;
         }
 
+        .calendar-day.booked {
+            background: #ffcccb !important;
+            color: #c82333 !important;
+            position: relative;
+        }
+
+        .calendar-day.booked::after {
+            content: '✓';
+            position: absolute;
+            top: 2px;
+            right: 4px;
+            font-size: 10px;
+            color: #c82333;
+        }
+
         .calendar-day.empty {
             background: transparent;
             cursor: default;
@@ -5631,8 +5646,29 @@
         const bookingState = {
             currentMonth: new Date().getMonth(),
             currentYear: new Date().getFullYear(),
-            selectedDate: null
+            selectedDate: null,
+            bookedDates: [] // Список забронированных дат
         };
+
+        // Загрузка забронированных дат с сервера
+        async function loadBookedDates() {
+            try {
+                const response = await fetch('/api/bookings');
+                const data = await response.json();
+                
+                if (data.success && data.bookings) {
+                    bookingState.bookedDates = data.bookings.map(b => b.date);
+                    console.log('Загружены забронированные даты:', bookingState.bookedDates);
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки забронированных дат:', error);
+            }
+        }
+
+        // Проверка, забронирована ли дата
+        function isDateBooked(dateString) {
+            return bookingState.bookedDates.includes(dateString);
+        }
 
         const monthNames = [
             'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
@@ -5690,6 +5726,11 @@
                 // Disable past dates
                 if (currentDate < today) {
                     dayElement.classList.add('disabled');
+                } else if (isDateBooked(dateString)) {
+                    // Дата забронирована
+                    dayElement.classList.add('disabled');
+                    dayElement.classList.add('booked');
+                    dayElement.title = 'Эта дата уже забронирована';
                 } else {
                     // Check if selected
                     if (bookingState.selectedDate === dateString) {
@@ -5762,12 +5803,13 @@
         // Previous month
         const prevMonthBtn = document.getElementById('prevMonth');
         if (prevMonthBtn) {
-            prevMonthBtn.addEventListener('click', () => {
+            prevMonthBtn.addEventListener('click', async () => {
                 bookingState.currentMonth--;
                 if (bookingState.currentMonth < 0) {
                     bookingState.currentMonth = 11;
                     bookingState.currentYear--;
                 }
+                await loadBookedDates();
                 renderCalendar();
             });
         }
@@ -5775,12 +5817,13 @@
         // Next month
         const nextMonthBtn = document.getElementById('nextMonth');
         if (nextMonthBtn) {
-            nextMonthBtn.addEventListener('click', () => {
+            nextMonthBtn.addEventListener('click', async () => {
                 bookingState.currentMonth++;
                 if (bookingState.currentMonth > 11) {
                     bookingState.currentMonth = 0;
                     bookingState.currentYear++;
                 }
+                await loadBookedDates();
                 renderCalendar();
             });
         }
@@ -5832,6 +5875,33 @@
             bookingNameInput.addEventListener('input', checkFormValidity);
         }
 
+        // Сохранение бронирования на сервер
+        async function saveBookingToServer(name, phone, date) {
+            try {
+                const response = await fetch('/api/bookings', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, phone, date })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.error || 'Ошибка сохранения бронирования');
+                }
+
+                return { success: true, booking: data.booking };
+            } catch (error) {
+                console.error('Ошибка сохранения бронирования:', error);
+                return { 
+                    success: false, 
+                    error: error.message || 'Не удалось сохранить бронирование' 
+                };
+            }
+        }
+
         // Form submission
         const bookingForm = document.getElementById('bookingForm');
         if (bookingForm) {
@@ -5861,38 +5931,47 @@
                 console.log('Имя:', name);
                 console.log('Телефон:', phone);
 
-                // Создаем уникальный ID брони
-                const bookingId = 'booking_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                console.log('ID брони:', bookingId);
+                // Сохраняем бронирование на сервер
+                const saveResult = await saveBookingToServer(name, phone, bookingState.selectedDate);
+                
+                if (!saveResult.success) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Забронировать';
+                    alert('❌ ' + saveResult.error);
+                    return;
+                }
+
+                const bookingId = saveResult.booking.id;
+                console.log('✅ Бронирование сохранено с ID:', bookingId);
 
                 // Отправляем уведомление в Telegram
                 const messageText = `🏠 <b>НОВАЯ ЗАПИСЬ НА ПОКАЗ!</b>\n\n👤 <b>Имя:</b> ${name}\n📱 <b>Телефон:</b> ${phone}\n📅 <b>Дата:</b> ${formatDateForDisplay(bookingState.selectedDate)}\n🆔 <b>ID брони:</b> ${bookingId}\n\n💬 <i>Для отмены отправьте:</i>\n<code>/cancel ${bookingId}</code>`;
                 
                 console.log('Сообщение для отправки:', messageText.substring(0, 100) + '...');
                 
-                let success = false;
+                let telegramSuccess = false;
                 try {
-                    success = await sendToTelegram(messageText);
+                    telegramSuccess = await sendToTelegram(messageText);
                 } catch (error) {
-                    console.error('❌ Ошибка в форме бронирования:', error);
-                    success = false;
+                    console.error('❌ Ошибка отправки в Telegram:', error);
+                    telegramSuccess = false;
                 }
 
-                console.log('Результат отправки бронирования:', success);
+                console.log('Результат отправки в Telegram:', telegramSuccess);
 
-                if (success) {
-                    console.log('✅ Бронирование: отправлено успешно');
-                    alert('✅ Запись успешно создана!\n\nМы свяжемся с вами в ближайшее время для уточнения времени показа.');
-                    
-                    // Reset form
-                    bookingForm.reset();
-                    bookingState.selectedDate = null;
-                    updateSelectedDatetime();
-                } else {
-                    console.log('❌ Бронирование: не удалось отправить');
-                    alert('❌ Ошибка отправки. Попробуйте ещё раз или позвоните нам.');
-                }
-
+                // Успех! (даже если Telegram не отправился, бронирование сохранено)
+                console.log('✅ Бронирование: сохранено');
+                alert('✅ Запись успешно создана!\n\nМы свяжемся с вами в ближайшее время для уточнения времени показа.');
+                
+                // Reset form
+                bookingForm.reset();
+                bookingState.selectedDate = null;
+                updateSelectedDatetime();
+                
+                // Обновляем список забронированных дат
+                await loadBookedDates();
+                renderCalendar();
+                
                 submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Забронировать';
                 submitBtn.disabled = false;
                 checkFormValidity();
@@ -5904,8 +5983,10 @@
 
         // Initialize booking system
         if (document.getElementById('calendarGrid')) {
-            // Отрисовываем календарь
-            renderCalendar();
+            // Загружаем забронированные даты и отрисовываем календарь
+            loadBookedDates().then(() => {
+                renderCalendar();
+            });
         }
 
         // ==================== END ONLINE BOOKING SYSTEM ====================
