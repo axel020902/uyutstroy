@@ -436,10 +436,10 @@
         let currentFilter = 'all';
         const BOOKINGS_API = '/api/bookings';
 
-        // Получить все бронирования с сервера
+        // Получить все бронирования с сервера (включая отмененные для админ-панели)
         async function loadBookings() {
             try {
-                const response = await fetch(BOOKINGS_API, {
+                const response = await fetch(BOOKINGS_API + '?all=true', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'

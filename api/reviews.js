@@ -98,13 +98,17 @@ module.exports = async function handler(req, res) {
     if (req.method === 'GET') {
         try {
             const reviews = await getReviews(kv);
-            // Возвращаем только одобренные отзывы
-            const approvedReviews = reviews.filter(r => r.approved !== false);
+            
+            // Если запрос с параметром ?all=true, возвращаем все отзывы (для админ-панели)
+            const showAll = req.query && req.query.all === 'true';
+            
+            // Для обычных пользователей возвращаем только одобренные
+            const filteredReviews = showAll ? reviews : reviews.filter(r => r.approved !== false);
             
             return res.status(200).json({
                 success: true,
-                reviews: approvedReviews,
-                count: approvedReviews.length
+                reviews: filteredReviews,
+                count: filteredReviews.length
             });
         } catch (error) {
             console.error('Ошибка GET /api/reviews:', error);

@@ -99,13 +99,16 @@ module.exports = async function handler(req, res) {
         try {
             const bookings = await getBookings(kv);
             
-            // Фильтруем только активные (не отмененные) бронирования
-            const activeBookings = bookings.filter(b => b.status !== 'cancelled');
+            // Если запрос с параметром ?all=true, возвращаем все бронирования (для админ-панели)
+            const showAll = req.query && req.query.all === 'true';
+            
+            // Для обычных пользователей (календарь) возвращаем только активные
+            const filteredBookings = showAll ? bookings : bookings.filter(b => b.status !== 'cancelled');
             
             return res.status(200).json({
                 success: true,
-                bookings: activeBookings,
-                count: activeBookings.length
+                bookings: filteredBookings,
+                count: filteredBookings.length
             });
         } catch (error) {
             console.error('Ошибка GET /api/bookings:', error);

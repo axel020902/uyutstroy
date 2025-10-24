@@ -386,10 +386,10 @@
         let allReviews = [];
         const REVIEWS_API = '/api/reviews';
 
-        // Получить все отзывы с сервера
+        // Получить все отзывы с сервера (включая неодобренные для админ-панели)
         async function loadReviews() {
             try {
-                const response = await fetch(REVIEWS_API, {
+                const response = await fetch(REVIEWS_API + '?all=true', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'
