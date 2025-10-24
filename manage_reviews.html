@@ -587,6 +587,7 @@
                         <div class="review-text">
                             ${escapeHtml(review.text)}
                         </div>
+                        ${review.photo ? `<img src="${review.photo}" alt="Фото от ${escapeHtml(review.name)}" class="review-photo" onclick="window.open(this.src, '_blank')" style="max-width: 100%; margin-top: 15px; border-radius: 10px; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">` : ''}
                         <div class="review-footer">
                             <div class="review-date">
                                 ${formatDate(review.date)}

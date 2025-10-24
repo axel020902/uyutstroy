@@ -3379,6 +3379,80 @@
             transform: scale(1.2);
         }
 
+        .file-input {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            background: #f9f9f9;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .file-input:hover {
+            border-color: #FFD700;
+            background: #fffef7;
+        }
+
+        .photo-preview {
+            margin-top: 15px;
+            position: relative;
+        }
+
+        .photo-preview img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: block;
+        }
+
+        .photo-preview .remove-photo {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .photo-preview .remove-photo:hover {
+            background: #c82333;
+            transform: scale(1.1);
+        }
+
+        .form-hint {
+            display: block;
+            margin-top: 8px;
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        .review-photo {
+            margin-top: 15px;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .review-photo:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
         .review-submit-btn {
             background: linear-gradient(135deg, #FFD700, #FFC700);
             color: #1a1a1a;
@@ -3988,6 +4062,14 @@
                     <div class="form-group">
                         <label for="reviewText">Ваш отзыв *</label>
                         <textarea id="reviewText" rows="4" placeholder="Расскажите о вашем опыте работы с нами..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewPhoto">
+                            <i class="fas fa-camera"></i> Добавить фотографию (необязательно)
+                        </label>
+                        <input type="file" id="reviewPhoto" accept="image/*" class="file-input">
+                        <div id="photoPreview" class="photo-preview"></div>
+                        <small class="form-hint">Поддерживаются форматы: JPG, PNG, GIF (макс. 5 МБ)</small>
                     </div>
                     <button type="submit" class="review-submit-btn">
                         <i class="fas fa-paper-plane"></i> Опубликовать отзыв
@@ -6114,6 +6196,7 @@
                     <div class="review-text">
                         ${escapeHtml(review.text)}
                     </div>
+                    ${review.photo ? `<img src="${review.photo}" alt="Фото от ${escapeHtml(review.name)}" class="review-photo" onclick="window.open(this.src, '_blank')">` : ''}
                     <div class="review-date">
                         ${formatReviewDate(review.date)}
                     </div>
@@ -6196,6 +6279,54 @@
             });
         }
 
+        // Превью загруженного фото
+        let selectedPhotoBase64 = null;
+        const photoInput = document.getElementById('reviewPhoto');
+        const photoPreview = document.getElementById('photoPreview');
+        
+        if (photoInput) {
+            photoInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                
+                if (file) {
+                    // Проверка размера (макс 5 МБ)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('Файл слишком большой! Максимальный размер: 5 МБ');
+                        photoInput.value = '';
+                        return;
+                    }
+                    
+                    // Проверка типа файла
+                    if (!file.type.startsWith('image/')) {
+                        alert('Пожалуйста, выберите изображение');
+                        photoInput.value = '';
+                        return;
+                    }
+                    
+                    // Создаём превью
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        selectedPhotoBase64 = event.target.result;
+                        
+                        photoPreview.innerHTML = `
+                            <img src="${selectedPhotoBase64}" alt="Preview">
+                            <button type="button" class="remove-photo" onclick="removePhoto()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+        
+        // Функция удаления фото
+        function removePhoto() {
+            selectedPhotoBase64 = null;
+            photoInput.value = '';
+            photoPreview.innerHTML = '';
+        }
+
         // Обработка формы отзыва
         const reviewForm = document.getElementById('reviewForm');
         if (reviewForm) {
@@ -6225,6 +6356,11 @@
                     rating: parseInt(rating),
                     text: text
                 };
+                
+                // Добавляем фото, если загружено
+                if (selectedPhotoBase64) {
+                    review.photo = selectedPhotoBase64;
+                }
 
                 // Сохраняем на сервер
                 const result = await saveReview(review);
@@ -6237,6 +6373,10 @@
                     // Очищаем форму
                     reviewForm.reset();
                     document.getElementById('reviewRating').value = '';
+                    
+                    // Очищаем фото
+                    selectedPhotoBase64 = null;
+                    photoPreview.innerHTML = '';
                     
                     // Сбрасываем звёзды
                     const stars = document.querySelectorAll('#ratingInput i');

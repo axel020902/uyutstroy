@@ -118,7 +118,7 @@ module.exports = async function handler(req, res) {
     // POST - добавить новый отзыв
     if (req.method === 'POST') {
         try {
-            const { name, project, rating, text } = req.body;
+            const { name, project, rating, text, photo } = req.body;
             
             // Валидация
             const validation = validateReview({ name, rating, text });
@@ -139,6 +139,14 @@ module.exports = async function handler(req, res) {
                 date: new Date().toISOString(),
                 approved: true // Автоматическое одобрение (можно изменить на false для модерации)
             };
+            
+            // Добавляем фото, если есть
+            if (photo) {
+                // Проверяем, что это base64 изображение
+                if (photo.startsWith('data:image/')) {
+                    newReview.photo = photo;
+                }
+            }
             
             // Получаем существующие отзывы
             const reviews = await getReviews(kv);
