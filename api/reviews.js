@@ -71,7 +71,7 @@ function sanitize(str) {
         .replace(/'/g, '&#039;');
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     // CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
@@ -85,9 +85,11 @@ export default async function handler(req, res) {
     // Получаем KV если доступен
     let kv = null;
     try {
-        // Проверяем наличие @vercel/kv
-        const { kv: vercelKv } = await import('@vercel/kv');
-        kv = vercelKv;
+        // Пытаемся подключить Vercel KV
+        if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+            const vercelKv = require('@vercel/kv');
+            kv = vercelKv.kv;
+        }
     } catch (e) {
         console.log('Vercel KV недоступен, используется память');
     }

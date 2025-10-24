@@ -2,8 +2,6 @@
   "name": "uyutstroy-website",
   "version": "1.0.0",
   "description": "Сайт строительной компании УЮТ СТРОЙ",
-  "main": "server.js",
-  "type": "module",
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js"
