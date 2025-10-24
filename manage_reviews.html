@@ -383,16 +383,88 @@
 
     <script>
         let allReviews = [];
+        const REVIEWS_API = '/api/reviews';
 
-        // Получить все отзывы из localStorage
-        function loadReviews() {
-            const saved = localStorage.getItem('reviews');
-            return saved ? JSON.parse(saved) : [];
+        // Получить все отзывы с сервера
+        async function loadReviews() {
+            try {
+                const response = await fetch(REVIEWS_API, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Ошибка загрузки отзывов');
+                }
+
+                const data = await response.json();
+                
+                if (data.success && data.reviews) {
+                    return data.reviews;
+                }
+                
+                return [];
+            } catch (error) {
+                console.error('Ошибка загрузки отзывов:', error);
+                showAlert('Ошибка загрузки отзывов с сервера', 'error');
+                return [];
+            }
         }
 
-        // Сохранить отзывы в localStorage
-        function saveReviews(reviews) {
-            localStorage.setItem('reviews', JSON.stringify(reviews));
+        // Удалить отзыв на сервере
+        async function deleteReviewAPI(reviewId) {
+            try {
+                const response = await fetch(REVIEWS_API, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: reviewId })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.error || 'Ошибка удаления отзыва');
+                }
+
+                return { success: true };
+            } catch (error) {
+                console.error('Ошибка удаления отзыва:', error);
+                return { 
+                    success: false, 
+                    error: error.message || 'Не удалось удалить отзыв' 
+                };
+            }
+        }
+
+        // Удалить все отзывы на сервере
+        async function deleteAllReviewsAPI() {
+            try {
+                const response = await fetch(REVIEWS_API, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ deleteAll: true })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.error || 'Ошибка удаления отзывов');
+                }
+
+                return { success: true };
+            } catch (error) {
+                console.error('Ошибка удаления всех отзывов:', error);
+                return { 
+                    success: false, 
+                    error: error.message || 'Не удалось удалить отзывы' 
+                };
+            }
         }
 
         // Показать уведомление
@@ -448,8 +520,8 @@
         }
 
         // Обновить статистику
-        function updateStats() {
-            const reviews = loadReviews();
+        async function updateStats() {
+            const reviews = await loadReviews();
             document.getElementById('totalReviews').textContent = reviews.length;
             
             if (reviews.length > 0) {
@@ -461,11 +533,18 @@
         }
 
         // Отобразить отзывы
-        function displayReviews(reviews = null) {
+        async function displayReviews(reviews = null) {
             const reviewsList = document.getElementById('reviewsList');
             
+            // Показываем индикатор загрузки
             if (reviews === null) {
-                reviews = loadReviews();
+                reviewsList.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #666;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 3rem; margin-bottom: 1rem; color: #f5576c;"></i>
+                        <p style="font-size: 1.1rem;">Загрузка отзывов...</p>
+                    </div>
+                `;
+                reviews = await loadReviews();
             }
             
             allReviews = reviews;
@@ -512,7 +591,7 @@
                                 ${formatDate(review.date)}
                             </div>
                             <div class="review-actions">
-                                <button class="btn btn-danger btn-small" onclick="deleteReview('${review.date}')">
+                                <button class="btn btn-danger btn-small" onclick="deleteReview('${review.id}')">
                                     <i class="fas fa-trash-alt"></i>
                                     Удалить
                                 </button>
@@ -524,23 +603,25 @@
         }
 
         // Удалить отзыв
-        function deleteReview(reviewDate) {
+        async function deleteReview(reviewId) {
             if (!confirm('Вы уверены, что хотите удалить этот отзыв?')) {
                 return;
             }
 
-            const reviews = loadReviews();
-            const filtered = reviews.filter(r => r.date !== reviewDate);
-            saveReviews(filtered);
+            const result = await deleteReviewAPI(reviewId);
             
-            showAlert('Отзыв успешно удален', 'success');
-            displayReviews();
-            updateStats();
+            if (result.success) {
+                showAlert('Отзыв успешно удален с сервера', 'success');
+                await displayReviews();
+                await updateStats();
+            } else {
+                showAlert('Ошибка: ' + result.error, 'error');
+            }
         }
 
         // Удалить все отзывы
-        function deleteAllReviews() {
-            const reviews = loadReviews();
+        async function deleteAllReviews() {
+            const reviews = await loadReviews();
             
             if (reviews.length === 0) {
                 showAlert('Нет отзывов для удаления', 'info');
@@ -551,15 +632,20 @@
                 return;
             }
 
-            localStorage.removeItem('reviews');
-            showAlert(`Все отзывы (${reviews.length} шт.) успешно удалены`, 'success');
-            displayReviews();
-            updateStats();
+            const result = await deleteAllReviewsAPI();
+            
+            if (result.success) {
+                showAlert(`Все отзывы (${reviews.length} шт.) успешно удалены с сервера`, 'success');
+                await displayReviews();
+                await updateStats();
+            } else {
+                showAlert('Ошибка: ' + result.error, 'error');
+            }
         }
 
         // Экспорт отзывов
-        function exportReviews() {
-            const reviews = loadReviews();
+        async function exportReviews() {
+            const reviews = await loadReviews();
             
             if (reviews.length === 0) {
                 showAlert('Нет отзывов для экспорта', 'info');
@@ -576,27 +662,28 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            URL.revokeObjectURL(url);
             
             showAlert(`Экспортировано ${reviews.length} отзывов`, 'success');
         }
 
         // Фильтрация отзывов
-        function filterReviews() {
+        async function filterReviews() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             
             if (!searchTerm) {
-                displayReviews();
+                await displayReviews();
                 return;
             }
 
-            const reviews = loadReviews();
+            const reviews = await loadReviews();
             const filtered = reviews.filter(review => {
                 return review.name.toLowerCase().includes(searchTerm) ||
                        (review.project && review.project.toLowerCase().includes(searchTerm)) ||
                        review.text.toLowerCase().includes(searchTerm);
             });
 
-            displayReviews(filtered);
+            await displayReviews(filtered);
         }
 
         // Инициализация при загрузке страницы

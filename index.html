@@ -668,7 +668,7 @@
         }
 
         .project-image.premium-house {
-            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('images-project/премиум.jpeg');
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('images-project/premium/1.jpeg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -796,7 +796,7 @@
         }
 
         .project-image.opera-house::before {
-            background: linear-gradient(45deg, rgba(155, 89, 182, 0.1), rgba(142, 68, 173, 0.1));
+            background: linear-gradient(45deg, rgba(147, 51, 234, 0.1), rgba(126, 34, 206, 0.1));
         }
 
         .project-content {
@@ -1072,7 +1072,7 @@
         /* Portfolio Section */
         .portfolio {
             padding: 100px 0;
-            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('images-project/портфолио.jpeg');
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('images-project/house-background.jpeg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -3160,20 +3160,6 @@
             cursor: not-allowed;
         }
 
-        .calendar-day.booked {
-            background: #ffcccc;
-            color: #cc0000;
-            position: relative;
-        }
-
-        .calendar-day.booked::after {
-            content: '🔒';
-            position: absolute;
-            top: 2px;
-            right: 2px;
-            font-size: 0.7em;
-        }
-
         .calendar-day.empty {
             background: transparent;
             cursor: default;
@@ -3205,6 +3191,41 @@
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
+        }
+
+        .booking-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .booking-form .form-group label {
+            display: block;
+            color: #1a1a1a;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .booking-form .form-group input {
+            width: 100%;
+            padding: 1.2rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: #ffffff;
+            color: #1a1a1a;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .booking-form .form-group input::placeholder {
+            color: #999;
+            font-weight: 400;
+        }
+
+        .booking-form .form-group input:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
         }
 
         .selected-datetime {
@@ -3424,9 +3445,6 @@
             color: #555;
             line-height: 1.6;
             margin-bottom: 15px;
-            word-wrap: break-word;
-            white-space: pre-wrap;
-            overflow-wrap: break-word;
         }
 
         .review-date {
@@ -3543,11 +3561,11 @@
             <ul class="nav-links">
                 <li><a href="#projects">Проекты</a></li>
                 <li><a href="#booking">Онлайн запись</a></li>
-                <li><a href="#calculator">Калькулятор</a></li>
                 <li><a href="#survey">Опрос</a></li>
+                <li><a href="#calculator">Калькулятор</a></li>
+                <li><a href="#reviews">Отзывы</a></li>
                 <li><a href="#portfolio">Портфолио</a></li>
                 <li><a href="#about">О компании</a></li>
-                <li><a href="#reviews">Отзывы</a></li>
             </ul>
         </nav>
     </header>
@@ -3738,14 +3756,14 @@
                         </div>
                     </div>
                     <div class="project-card animate-on-scroll-scale delay-7">
-                        <div class="project-image opera-house">Дом "Опера"</div>
+                        <div class="project-image opera-house">Проект "Опера"</div>
                         <div class="project-content">
-                            <h3>Дом "Опера"</h3>
-                            <p>Просторный дом премиум-класса с элегантным дизайном и максимальным комфортом</p>
-                            <div class="project-price">Площадь: 122 м²</div>
+                            <h3>Проект "Опера"</h3>
+                            <p>Элегантный дом с изысканным дизайном и продуманной функциональностью для комфортной жизни</p>
+                            <div class="project-price">Площадь: 95 м²</div>
                             <div class="project-price" style="margin-top: 0.5rem; font-size: 0.95rem;">Планировка: 3+</div>
-                            <div class="project-price" style="margin-top: 0.5rem; font-size: 0.95rem;">Теплый контур: 7 700 000 ₽</div>
-                            <div class="project-price" style="margin-top: 0.5rem; font-size: 0.95rem;">Отделка White box: 9 000 000 ₽</div>
+                            <div class="project-price" style="margin-top: 0.5rem; font-size: 0.95rem;">Теплый контур: 6 300 000 ₽</div>
+                            <div class="project-price" style="margin-top: 0.5rem; font-size: 0.95rem;">Отделка White box: 7 400 000 ₽</div>
                         </div>
                     </div>
                 </div>
@@ -3879,9 +3897,38 @@
                         </button>
                         
                         <div class="consent-text">Нажимая на кнопку "Забронировать" я даю согласие на обработку персональных данных</div>
-                        
                     </form>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Survey Section -->
+    <section class="survey" id="survey">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">Пройди опрос и получи стоимость будущего дома за 1 минуту!</h2>
+            <p class="section-subtitle animate-on-scroll delay-1">Ответьте на несколько вопросов и узнайте точную стоимость строительства вашего дома</p>
+            <div class="survey-container animate-on-scroll-scale delay-2">
+                <form class="survey-form" id="quizForm">
+                    <div id="quizStep"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mortgage Calculator Section -->
+    <section class="mortgage-calculator" id="calculator">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">Ипотечный калькулятор</h2>
+            <p class="section-subtitle animate-on-scroll delay-1">Рассчитайте ежемесячный платеж по ипотеке с актуальными ставками от Сбербанка</p>
+            <div class="calculator-container animate-on-scroll delay-2">
+                <iframe 
+                    src="https://domclick.ru/ipoteka/calculator" 
+                    width="100%" 
+                    height="600px" 
+                    frameborder="0" 
+                    scrolling="no">
+                </iframe>
             </div>
         </div>
     </section>
@@ -3932,36 +3979,6 @@
             <!-- Reviews List -->
             <div class="reviews-list" id="reviewsList">
                 <!-- Отзывы будут добавляться здесь -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Mortgage Calculator Section -->
-    <section class="mortgage-calculator" id="calculator">
-        <div class="container">
-            <h2 class="section-title animate-on-scroll">Ипотечный калькулятор</h2>
-            <p class="section-subtitle animate-on-scroll delay-1">Рассчитайте ежемесячный платеж по ипотеке с актуальными ставками от Сбербанка</p>
-            <div class="calculator-container animate-on-scroll delay-2">
-                <iframe 
-                    src="https://domclick.ru/ipoteka/calculator" 
-                    width="100%" 
-                    height="600px" 
-                    frameborder="0" 
-                    scrolling="no">
-                </iframe>
-            </div>
-        </div>
-    </section>
-
-    <!-- Survey Section -->
-    <section class="survey" id="survey">
-        <div class="container">
-            <h2 class="section-title animate-on-scroll">Пройди опрос и получи стоимость будущего дома за 1 минуту!</h2>
-            <p class="section-subtitle animate-on-scroll delay-1">Ответьте на несколько вопросов и узнайте точную стоимость строительства вашего дома</p>
-            <div class="survey-container animate-on-scroll-scale delay-2">
-                <form class="survey-form" id="quizForm">
-                    <div id="quizStep"></div>
-                </form>
             </div>
         </div>
     </section>
@@ -4253,13 +4270,12 @@
                         <option value="Симфония">Симфония</option>
                         <option value="Симфония MAX">Симфония MAX</option>
                         <option value="Идиллия">Идиллия</option>
-                        <option value="Премиум">Премиум</option>
-                        <option value="Опера">Опера</option>
                         <option value="Атлант mini">Атлант mini</option>
                         <option value="Атлант">Атлант</option>
                         <option value="Оптимал">Оптимал</option>
                         <option value="Оптимал 90">Оптимал 90</option>
                         <option value="Оптимал +">Оптимал +</option>
+                        <option value="Премиум">Премиум</option>
                     </select>
                 </div>
                 <button type="submit" class="submit-btn">
@@ -4324,12 +4340,17 @@
     </button>
 
     <script>
-        // Функция отправки сообщений в Telegram
+        // Функция отправки сообщений в Telegram (ГЛОБАЛЬНАЯ - доступна везде)
         async function sendToTelegram(message) {
+            // Определяем базовый URL API: при file:// используем абсолютный прод-домен, иначе относительный путь
+            // Теперь используем локальный Node сервер по умолчанию
+            const apiBase = (location.protocol === 'file:') ? 'http://localhost:3000' : '';
             console.log('📤 Начинаю отправку в Telegram...');
+            console.log('Сообщение:', message.substring(0, 50) + '...');
             
+            // Используем serverless функцию Vercel для отправки
             try {
-                const response = await fetch('/api/telegram', {
+                const response = await fetch(`${apiBase}/api/telegram`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -4340,7 +4361,9 @@
                 });
                 
                 if (!response.ok) {
-                    console.error('❌ HTTP ошибка:', response.status);
+                    console.error('❌ HTTP ошибка:', response.status, response.statusText);
+                    const errorData = await response.json().catch(() => ({}));
+                    console.error('Детали ошибки:', errorData);
                     return false;
                 }
                 
@@ -4351,24 +4374,13 @@
                     console.log('✅ Сообщение успешно отправлено в Telegram!');
                     return true;
                 } else {
-                    console.error('❌ Ошибка отправки:', data.error);
+                    console.error('❌ Ошибка отправки:', data.error || 'Неизвестная ошибка');
                     return false;
                 }
             } catch (error) {
                 console.error('❌ Ошибка при отправке запроса:', error);
                 return false;
             }
-        }
-
-        // Функция для форматирования даты и времени
-        function getCurrentDateTime() {
-            const now = new Date();
-            const day = String(now.getDate()).padStart(2, '0');
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const year = now.getFullYear();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            return `${day}.${month}.${year} ${hours}:${minutes}`;
         }
 
         // Инициализация после загрузки DOM
@@ -4743,19 +4755,41 @@
                         return;
                     }
 
-                    // Отправка в Telegram
-                    const currentDateTime = getCurrentDateTime();
-                    const telegramMessage = `🔔 <b>Новая заявка на консультацию:</b>\n\n👤 <b>Имя:</b> ${name}\n📞 <b>Телефон:</b> ${phone}\n💬 <b>Сообщение:</b> ${message || 'не указано'}\n📅 <b>Дата заявки:</b> ${currentDateTime}`;
-                    
-                    sendToTelegram(telegramMessage).catch(err => console.error('Ошибка отправки в Telegram:', err));
+                    // Лоадер
+                    const btn = this.querySelector('.submit-btn');
+                    const oldText = btn.innerHTML;
+                    btn.innerHTML = 'Отправка...';
+                    btn.disabled = true;
 
-                    // Показываем успех
-                    showNotify('Спасибо! Ваша заявка отправлена.', true);
-                    this.reset();
+                    // Отправка данных в Telegram через JavaScript
+                    const messageText = `🔔 <b>Новая заявка на консультацию:</b>\n\n👤 <b>Имя:</b> ${name}\n📞 <b>Телефон:</b> ${phone}\n💬 <b>Сообщение:</b> ${message}`;
+
+                    console.log('🔄 Форма консультации: начинаю отправку...');
+                    
+                    let success = false;
+                    try {
+                        success = await sendToTelegram(messageText);
+                    } catch (error) {
+                        console.error('❌ Ошибка в форме консультации:', error);
+                        success = false;
+                    }
+
+                    if (success) {
+                        console.log('✅ Консультация: отправлено');
+                        showNotify('Спасибо! Ваша заявка отправлена.', true);
+                        this.reset();
+                        btn.innerHTML = oldText;
+                        btn.disabled = false;
+                    } else {
+                        console.log('❌ Консультация: не отправлено');
+                        showNotify('Ошибка отправки. Попробуйте ещё раз.', false);
+                        btn.innerHTML = oldText;
+                        btn.disabled = false;
+                    }
                 });
             }
 
-            // Отправка формы из модального окна
+            // Отправка формы из модального окна в Telegram
             const callbackForm = document.getElementById('callbackForm');
             if (callbackForm) {
                 callbackForm.addEventListener('submit', async function(e) {
@@ -4767,16 +4801,37 @@
                         showNotify('Пожалуйста, заполните обязательные поля: имя и телефон.', false);
                         return;
                     }
+                    const btn = callbackForm.querySelector('.submit-btn');
+                    const oldText = btn.innerHTML;
+                    btn.innerHTML = 'Отправка...';
+                    btn.disabled = true;
+
+                    // Отправка данных в Telegram через JavaScript
+                    const messageText = `📞 <b>Новая заявка на обратный звонок:</b>\n\n👤 <b>Имя:</b> ${name}\n📱 <b>Телефон:</b> ${phone}\n💬 <b>Комментарий:</b> ${comment}`;
+
+                    console.log('🔄 Форма обратного звонка: начинаю отправку...');
                     
-                    // Отправка в Telegram
-                    const currentDateTime = getCurrentDateTime();
-                    const telegramMessage = `📞 <b>Новая заявка на обратный звонок:</b>\n\n👤 <b>Имя:</b> ${name}\n📱 <b>Телефон:</b> ${phone}\n💬 <b>Комментарий:</b> ${comment || 'не указан'}\n📅 <b>Дата заявки:</b> ${currentDateTime}`;
-                    
-                    sendToTelegram(telegramMessage).catch(err => console.error('Ошибка отправки в Telegram:', err));
-                    
-                    showNotify('Спасибо! Ваша заявка отправлена.', true);
-                    callbackForm.reset();
-                    document.getElementById('callbackModal').style.display = 'none';
+                    let success = false;
+                    try {
+                        success = await sendToTelegram(messageText);
+                    } catch (error) {
+                        console.error('❌ Ошибка в форме звонка:', error);
+                        success = false;
+                    }
+
+                    if (success) {
+                        console.log('✅ Обратный звонок: отправлено');
+                        showNotify('Спасибо! Ваша заявка отправлена.', true);
+                        callbackForm.reset();
+                        btn.innerHTML = oldText;
+                        btn.disabled = false;
+                        document.getElementById('callbackModal').style.display = 'none';
+                    } else {
+                        console.log('❌ Обратный звонок: не отправлено');
+                        showNotify('Ошибка отправки. Попробуйте ещё раз.', false);
+                        btn.innerHTML = oldText;
+                        btn.disabled = false;
+                    }
                 });
             }
 
@@ -5045,20 +5100,31 @@
                         return;
                     }
                     phoneError.style.display = 'none';
-                    
-                    // Отправка в Telegram
-                    const currentDateTime = getCurrentDateTime();
-                    let telegramMessage = '📋 <b>Принята заявка на расчет стоимости:</b>\n\n';
+                    // Формируем текст для Telegram
+                    let messageText = '📋 <b>Принята заявка на расчет стоимости:</b>\n\n';
                     quizData.forEach((q, idx) => {
-                        const answers = quizAnswers[idx] || [];
-                        telegramMessage += `❓ <b>${q.question}</b>\n✅ Ответ: ${answers.join(', ') || 'не выбрано'}\n\n`;
+                        messageText += `❓ <b>${q.question}</b>\n✅ Ответ: ${(quizAnswers[idx]||[]).join(', ')}\n\n`;
                     });
-                    telegramMessage += `📱 <b>Телефон:</b> ${phoneInput.value}\n📅 <b>Дата заявки:</b> ${currentDateTime}`;
+                    messageText += `📱 <b>Телефон:</b> ${phoneInput.value}`;
+
+                    console.log('🔄 Викторина: начинаю отправку...');
                     
-                    sendToTelegram(telegramMessage).catch(err => console.error('Ошибка отправки в Telegram:', err));
-                    
-                    // Показываем успех
-                    quizStep.innerHTML = '<div style="text-align:center;padding:2rem;"><h3>Спасибо!</h3><p>Ваша заявка отправлена.<br>Мы свяжемся с вами в ближайшее время.</p></div>';
+                    let success = false;
+                    try {
+                        success = await sendToTelegram(messageText);
+                    } catch (error) {
+                        console.error('❌ Ошибка в викторине:', error);
+                        success = false;
+                    }
+
+                    if (success) {
+                        console.log('✅ Викторина: отправлено');
+                        quizStep.innerHTML = '<div style="text-align:center;padding:2rem;"><h3>Спасибо!</h3><p>Ваша заявка отправлена.<br>Мы свяжемся с вами в ближайшее время.</p></div>';
+                    } else {
+                        console.log('❌ Викторина: не отправлено');
+                        phoneError.textContent = 'Ошибка отправки. Попробуйте ещё раз.';
+                        phoneError.style.display = 'block';
+                    }
                 };
             }
         });
@@ -5147,7 +5213,7 @@
             });
         }
 
-        // Отправка формы "Узнать стоимость проекта"
+        // Отправка формы "Узнать стоимость проекта" в Telegram
         const projectCostForm = document.getElementById('projectCostForm');
         if (projectCostForm) {
             projectCostForm.addEventListener('submit', async function(e) {
@@ -5161,26 +5227,51 @@
                     return;
                 }
 
-                // Отправка в Telegram
-                const currentDateTime = getCurrentDateTime();
-                const telegramMessage = `💰 <b>Новая заявка на расчет стоимости проекта:</b>\n\n👤 <b>Имя:</b> ${name}\n📞 <b>Телефон:</b> ${phone}\n🏠 <b>Проект:</b> ${project}\n📅 <b>Дата заявки:</b> ${currentDateTime}`;
-                
-                sendToTelegram(telegramMessage).catch(err => console.error('Ошибка отправки в Telegram:', err));
+                const btn = this.querySelector('.submit-btn');
+                const oldText = btn.innerHTML;
+                btn.innerHTML = 'Отправка...';
+                btn.disabled = true;
 
-                // Закрываем модальное окно
-                const modal = document.getElementById('projectCostModal');
-                if (modal) {
-                    modal.classList.remove('show');
-                    setTimeout(() => {
-                        modal.style.display = 'none';
-                    }, 300);
+                // Отправка данных в Telegram через JavaScript
+                const messageText = `💰 <b>Новая заявка на расчет стоимости проекта:</b>\n\n👤 <b>Имя:</b> ${name}\n📞 <b>Телефон:</b> ${phone}\n🏠 <b>Проект:</b> ${project}`;
+
+                console.log('🔄 Форма "Расчёт стоимости": начинаю отправку...');
+                
+                let success = false;
+                try {
+                    success = await sendToTelegram(messageText);
+                } catch (error) {
+                    console.error('❌ Ошибка в форме расчёта:', error);
+                    success = false;
                 }
-                
-                // Показываем сообщение об успехе
-                showSuccessMessage();
-                
-                // Сброс формы
-                this.reset();
+
+                console.log('Результат отправки формы расчёта:', success);
+
+                if (success) {
+                    console.log('✅ Форма расчёта: отправлено успешно');
+                    
+                    // Закрываем модальное окно
+                    const modal = document.getElementById('projectCostModal');
+                    if (modal) {
+                        modal.classList.remove('show');
+                        setTimeout(() => {
+                            modal.style.display = 'none';
+                        }, 300);
+                    }
+                    
+                    // Показываем сообщение об успехе
+                    showSuccessMessage();
+                    
+                    // Сброс формы
+                    this.reset();
+                    btn.innerHTML = oldText;
+                    btn.disabled = false;
+                } else {
+                    console.log('❌ Форма расчёта: не удалось отправить');
+                    showNotify('Ошибка отправки. Попробуйте ещё раз или позвоните нам.', false);
+                    btn.innerHTML = oldText;
+                    btn.disabled = false;
+                }
             });
         }
 
@@ -5537,29 +5628,6 @@
         // ==================== ONLINE BOOKING SYSTEM ====================
         
         // Booking system state
-        // Функции для работы с бронированиями
-        function getBookings() {
-            const bookings = localStorage.getItem('bookings');
-            return bookings ? JSON.parse(bookings) : [];
-        }
-
-        function saveBooking(booking) {
-            const bookings = getBookings();
-            bookings.push(booking);
-            localStorage.setItem('bookings', JSON.stringify(bookings));
-        }
-
-        function removeBooking(bookingId) {
-            const bookings = getBookings();
-            const filtered = bookings.filter(b => b.id !== bookingId);
-            localStorage.setItem('bookings', JSON.stringify(filtered));
-        }
-
-        function isDateBooked(dateString) {
-            const bookings = getBookings();
-            return bookings.some(b => b.date === dateString);
-        }
-
         const bookingState = {
             currentMonth: new Date().getMonth(),
             currentYear: new Date().getFullYear(),
@@ -5619,13 +5687,9 @@
                 currentDate.setHours(0, 0, 0, 0);
                 const dateString = formatDate(currentDate);
 
-                // Disable past dates or booked dates
-                if (currentDate < today || isDateBooked(dateString)) {
+                // Disable past dates
+                if (currentDate < today) {
                     dayElement.classList.add('disabled');
-                    if (isDateBooked(dateString)) {
-                        dayElement.classList.add('booked');
-                        dayElement.title = 'Эта дата уже забронирована';
-                    }
                 } else {
                     // Check if selected
                     if (bookingState.selectedDate === dateString) {
@@ -5788,45 +5852,50 @@
                     return;
                 }
 
-                // Отключаем кнопку и показываем loading
-                const oldBtnText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+                // Disable button during submission
                 submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+
+                console.log('🔄 Форма бронирования: начинаю отправку...');
+                console.log('Дата:', bookingState.selectedDate);
+                console.log('Имя:', name);
+                console.log('Телефон:', phone);
 
                 // Создаем уникальный ID брони
                 const bookingId = 'booking_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                
-                // Сохраняем бронирование в localStorage
-                const booking = {
-                    id: bookingId,
-                    date: bookingState.selectedDate,
-                    name: name,
-                    phone: phone,
-                    createdAt: new Date().toISOString()
-                };
-                saveBooking(booking);
+                console.log('ID брони:', bookingId);
 
-                // Отправка в Telegram
-                const currentDateTime = getCurrentDateTime();
-                const formattedDate = formatDateForDisplay(bookingState.selectedDate);
-                const telegramMessage = `🏠 <b>Новое бронирование показа дома:</b>\n\n👤 <b>Имя:</b> ${name}\n📞 <b>Телефон:</b> ${phone}\n📅 <b>Дата показа:</b> ${formattedDate}\n🆔 <b>ID брони:</b> ${bookingId}\n⏰ <b>Дата заявки:</b> ${currentDateTime}`;
+                // Отправляем уведомление в Telegram
+                const messageText = `🏠 <b>НОВАЯ ЗАПИСЬ НА ПОКАЗ!</b>\n\n👤 <b>Имя:</b> ${name}\n📱 <b>Телефон:</b> ${phone}\n📅 <b>Дата:</b> ${formatDateForDisplay(bookingState.selectedDate)}\n🆔 <b>ID брони:</b> ${bookingId}\n\n💬 <i>Для отмены отправьте:</i>\n<code>/cancel ${bookingId}</code>`;
                 
-                sendToTelegram(telegramMessage).catch(err => console.error('Ошибка отправки в Telegram:', err));
+                console.log('Сообщение для отправки:', messageText.substring(0, 100) + '...');
+                
+                let success = false;
+                try {
+                    success = await sendToTelegram(messageText);
+                } catch (error) {
+                    console.error('❌ Ошибка в форме бронирования:', error);
+                    success = false;
+                }
 
-                // Показываем уведомление
-                alert(`✅ Запись создана!\n\nДата: ${formattedDate}\nМы свяжемся с вами в ближайшее время для уточнения времени показа.`);
-                
-                // Восстанавливаем кнопку
-                submitBtn.innerHTML = oldBtnText;
+                console.log('Результат отправки бронирования:', success);
+
+                if (success) {
+                    console.log('✅ Бронирование: отправлено успешно');
+                    alert('✅ Запись успешно создана!\n\nМы свяжемся с вами в ближайшее время для уточнения времени показа.');
+                    
+                    // Reset form
+                    bookingForm.reset();
+                    bookingState.selectedDate = null;
+                    updateSelectedDatetime();
+                } else {
+                    console.log('❌ Бронирование: не удалось отправить');
+                    alert('❌ Ошибка отправки. Попробуйте ещё раз или позвоните нам.');
+                }
+
+                submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Забронировать';
                 submitBtn.disabled = false;
-                
-                // Reset form
-                bookingForm.reset();
-                bookingState.selectedDate = null;
-                updateSelectedDatetime();
-                
-                // Обновляем календарь чтобы показать забронированную дату
-                renderCalendar();
+                checkFormValidity();
             });
         }
 
@@ -5843,23 +5912,83 @@
 
         // ==================== REVIEWS SYSTEM ====================
         
-        // Загрузка отзывов из localStorage
-        function loadReviews() {
-            const saved = localStorage.getItem('reviews');
-            return saved ? JSON.parse(saved) : [];
+        // API endpoint для работы с отзывами
+        const REVIEWS_API = '/api/reviews';
+        
+        // Кеш отзывов
+        let reviewsCache = [];
+
+        // Загрузка отзывов с сервера
+        async function loadReviews() {
+            try {
+                const response = await fetch(REVIEWS_API, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Ошибка загрузки отзывов');
+                }
+
+                const data = await response.json();
+                
+                if (data.success && data.reviews) {
+                    reviewsCache = data.reviews;
+                    return data.reviews;
+                }
+                
+                return reviewsCache;
+            } catch (error) {
+                console.error('Ошибка загрузки отзывов:', error);
+                // Возвращаем кешированные отзывы при ошибке
+                return reviewsCache;
+            }
         }
 
-        // Сохранение отзывов в localStorage
-        function saveReviews(reviews) {
-            localStorage.setItem('reviews', JSON.stringify(reviews));
+        // Сохранение отзыва на сервер
+        async function saveReview(review) {
+            try {
+                const response = await fetch(REVIEWS_API, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(review)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.error || 'Ошибка сохранения отзыва');
+                }
+
+                return { success: true, review: data.review };
+            } catch (error) {
+                console.error('Ошибка сохранения отзыва:', error);
+                return { 
+                    success: false, 
+                    error: error.message || 'Не удалось сохранить отзыв. Попробуйте позже.' 
+                };
+            }
         }
 
         // Отображение отзывов
-        function renderReviews() {
+        async function renderReviews() {
             const reviewsList = document.getElementById('reviewsList');
             if (!reviewsList) return;
 
-            const reviews = loadReviews();
+            // Показываем загрузку
+            reviewsList.innerHTML = `
+                <div style="text-align: center; padding: 2rem; color: #666;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                    <p>Загрузка отзывов...</p>
+                </div>
+            `;
+
+            const reviews = await loadReviews();
+            reviewsList.innerHTML = '';
 
             if (reviews.length === 0) {
                 reviewsList.innerHTML = `
@@ -5871,8 +6000,6 @@
                 `;
                 return;
             }
-
-            reviewsList.innerHTML = '';
 
             // Сортируем по дате (новые сверху)
             const sortedReviews = [...reviews].sort((a, b) => 
@@ -5987,7 +6114,7 @@
         // Обработка формы отзыва
         const reviewForm = document.getElementById('reviewForm');
         if (reviewForm) {
-            reviewForm.addEventListener('submit', function(e) {
+            reviewForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
 
                 const name = document.getElementById('reviewName').value.trim();
@@ -6000,43 +6127,54 @@
                     return;
                 }
 
+                // Блокируем кнопку отправки
+                const submitBtn = reviewForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+
                 // Создаём новый отзыв
                 const review = {
-                    id: 'review_' + Date.now(),
                     name: name,
                     project: project,
                     rating: parseInt(rating),
-                    text: text,
-                    date: new Date().toISOString()
+                    text: text
                 };
 
-                // Сохраняем
-                const reviews = loadReviews();
-                reviews.push(review);
-                saveReviews(reviews);
+                // Сохраняем на сервер
+                const result = await saveReview(review);
 
-                // Обновляем отображение
-                renderReviews();
+                // Разблокируем кнопку
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
 
-                // Очищаем форму
-                reviewForm.reset();
-                document.getElementById('reviewRating').value = '';
-                
-                // Сбрасываем звёзды
-                const stars = document.querySelectorAll('#ratingInput i');
-                stars.forEach(s => {
-                    s.classList.remove('fas', 'active');
-                    s.classList.add('far');
-                });
+                if (result.success) {
+                    // Очищаем форму
+                    reviewForm.reset();
+                    document.getElementById('reviewRating').value = '';
+                    
+                    // Сбрасываем звёзды
+                    const stars = document.querySelectorAll('#ratingInput i');
+                    stars.forEach(s => {
+                        s.classList.remove('fas', 'active');
+                        s.classList.add('far');
+                    });
 
-                // Показываем уведомление
-                alert('✅ Спасибо за ваш отзыв! Он опубликован.');
+                    // Обновляем отображение
+                    await renderReviews();
 
-                // Прокручиваем к списку отзывов
-                document.getElementById('reviewsList').scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'nearest' 
-                });
+                    // Показываем уведомление
+                    alert('✅ Спасибо за ваш отзыв! Он успешно опубликован и виден всем посетителям сайта.');
+
+                    // Прокручиваем к списку отзывов
+                    document.getElementById('reviewsList').scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'nearest' 
+                    });
+                } else {
+                    // Показываем ошибку
+                    alert('❌ ' + result.error);
+                }
             });
         }
 
